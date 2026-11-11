@@ -1,5 +1,5 @@
 
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal, OnDestroy, DestroyRef } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormsModule } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyForm } from '@ngx-formly/core';
@@ -9,6 +9,7 @@ import { finalize } from 'rxjs';
 import { SignUpPayload } from '../../models/auth.interface';
 import { RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-signup',
@@ -19,7 +20,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class SignupComponent {
   readonly successMessage = SIGNUP_MESSAGES.success;
-  authService = inject(AuthService);
+  readonly authService = inject(AuthService);
   signUpForm = new FormGroup({});
   isSuccess = signal<boolean>(false);
   errorMessage = signal<string | null>(null);
@@ -31,6 +32,7 @@ export class SignupComponent {
     email: '',
   });
   fields: FormlyFieldConfig[] = signUpFormFields;
+  private destroyRef = inject(DestroyRef);
 
   onSubmit(): void {
     if (this.signUpForm.invalid || this.isLoading()) {
@@ -46,6 +48,7 @@ export class SignupComponent {
     this.authService
       .signUp(this.model())
       .pipe(
+        takeUntilDestroyed(this.destroyRef),
         finalize(() => {
           this.isLoading.set(false);
         })
