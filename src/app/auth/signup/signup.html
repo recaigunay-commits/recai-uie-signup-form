@@ -1,0 +1,50 @@
+
+<div class="ui middle aligned center aligned grid">
+    <div class="column signup-column">
+  
+      <h2 class="ui teal header">
+        <i class="user plus icon"></i>
+        <div class="content">
+          Create your account
+        </div>
+      </h2>
+  
+      <form
+        class="ui large form"
+        [formGroup]="signUpForm"
+        (ngSubmit)="onSubmit()">
+  
+        <div class="ui segment">
+  
+          <formly-form
+          [form]="signUpForm"
+          [fields]="fields"
+          [model]="model()"
+          (modelChange)="model.set($event)">
+        </formly-form>
+  
+          <button
+            class="ui fluid large teal submit button"
+            type="submit"
+            [class.loading]="isLoading()"
+            [disabled]="signUpForm.invalid || isLoading()">
+            Sign Up
+          </button>
+  
+        </div>
+      </form>
+  
+      <div class="ui message">
+        Already registered?
+        <a routerLink="/login">Login</a>
+      </div>
+
+      @if (successMessage()) {
+        <div class="ui positive message">
+          {{ successMessage() }}
+        </div>
+      }
+  
+    </div>
+  </div>
+  
