@@ -1,28 +1,41 @@
-
 <div class="ui middle aligned center aligned grid">
-    <div class="column signup-column">
-  
+  <div class="column signup-column">
+
+    @if (isSuccess()) {
+      <div class="ui positive message segment left aligned">
+        <h3 class="ui header">
+          <i class="check circle icon green"></i>
+          <div class="content">Account Created!</div>
+        </h3>
+        <p>{{ successMessage }}.</p>
+        <a routerLink="/login" class="ui fluid large teal button">
+          Go to Login
+        </a>
+      </div>
+    } @else {
       <h2 class="ui teal header">
         <i class="user plus icon"></i>
-        <div class="content">
-          Create your account
-        </div>
+        <div class="content">Create your account</div>
       </h2>
-  
-      <form
-        class="ui large form"
-        [formGroup]="signUpForm"
-        (ngSubmit)="onSubmit()">
-  
-        <div class="ui segment">
-  
+
+      <form class="ui large form" [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+        <div class="ui stacked segment left aligned">
+
+          @if (errorMessage()) {
+            <div class="ui negative message">
+              <i class="close icon" (click)="errorMessage.set(null)"></i>
+              <div class="header">Sign up failed</div>
+              <p>{{ errorMessage() }}</p>
+            </div>
+          }
+
           <formly-form
-          [form]="signUpForm"
-          [fields]="fields"
-          [model]="model()"
-          (modelChange)="model.set($event)">
-        </formly-form>
-  
+            [form]="signUpForm"
+            [fields]="fields"
+            [model]="model()"
+            (modelChange)="model.set($event)">
+          </formly-form>
+
           <button
             class="ui fluid large teal submit button"
             type="submit"
@@ -30,21 +43,14 @@
             [disabled]="signUpForm.invalid || isLoading()">
             Sign Up
           </button>
-  
+
         </div>
       </form>
-  
-      <div class="ui message">
-        Already registered?
-        <a routerLink="/login">Login</a>
-      </div>
 
-      @if (successMessage()) {
-        <div class="ui positive message">
-          {{ successMessage() }}
-        </div>
-      }
-  
-    </div>
+      <div class="ui message">
+        Already registered? <a routerLink="/login">Login</a>
+      </div>
+    }
+
   </div>
-  
+</div>

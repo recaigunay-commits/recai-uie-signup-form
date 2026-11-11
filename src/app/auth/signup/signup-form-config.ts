@@ -51,4 +51,8 @@ export const signUpFormFields: FormlyFieldConfig[] =  [
     },
   ];
 
-  export const SIGNUP_SUCCESS_MESSAGE = 'Account created! Redirecting to login...';
+  export const SIGNUP_MESSAGES = {
+    success: 'Account created successfully! Please sign in with your email.',
+    errorConnection: 'Unable to reach the server. Please check your connection.',
+    errorFail: 'Registration failed. Please try again.'
+  }

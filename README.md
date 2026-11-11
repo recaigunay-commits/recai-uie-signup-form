@@ -1,6 +1,7 @@
 # RecaiUieSignupForm
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.0
+and used semantic ui lib for styling and ngx-formly lib for form
 
 ## Development server
 
@@ -21,9 +22,11 @@ ng build
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
-## Running server with api end points
+## Running express server for server side rendering and api end points
 
 This will run express server listening on `http://localhost:4000` to accept api requests
+
+To start a express server, run:
 
 ```bash
 npm run serve:ssr:recai-uie-signup-form

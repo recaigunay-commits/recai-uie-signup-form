@@ -3,11 +3,12 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { ReactiveFormsModule, FormGroup, FormsModule } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyForm } from '@ngx-formly/core';
-import { SIGNUP_SUCCESS_MESSAGE, signUpFormFields } from './signup-form-config';
+import { SIGNUP_MESSAGES, signUpFormFields } from './signup-form-config';
 import { AuthService } from '../../services/auth.service';
 import { finalize } from 'rxjs';
 import { SignUpPayload } from '../../models/auth.interface';
 import { RouterLink } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-signup',
@@ -17,10 +18,13 @@ import { RouterLink } from '@angular/router';
   imports: [RouterLink, ReactiveFormsModule, FormlyForm],
 })
 export class SignupComponent {
+  readonly successMessage = SIGNUP_MESSAGES.success;
   authService = inject(AuthService);
   signUpForm = new FormGroup({});
-  successMessage = signal<string | null>(null);
+  isSuccess = signal<boolean>(false);
+  errorMessage = signal<string | null>(null);
   isLoading = signal<boolean>(false);
+
   model = signal<SignUpPayload>({
     firstName: '',
     lastName: '',
@@ -37,7 +41,8 @@ export class SignupComponent {
     // getting results with selectors if it is successfully created. 
 
     this.isLoading.set(true);
-
+    this.isSuccess.set(false);
+    this.errorMessage.set(null);
     this.authService
       .signUp(this.model())
       .pipe(
@@ -47,13 +52,16 @@ export class SignupComponent {
       )
       .subscribe({
         next: (response) => {
-          this.successMessage.set(SIGNUP_SUCCESS_MESSAGE);
-          setTimeout(() => {
-            // this.router.navigate(['/login']); we can navigate login page
-          }, 2000);
+          this.isSuccess.set(true);
+          // once it is successfully created we can redirect user to login page automatically.
         },
-        error: (err) => {
-          // Handle errors
+        error: (err: HttpErrorResponse) => {
+          const message =
+          err.status === 0
+            ? SIGNUP_MESSAGES.errorConnection
+            : err.error?.error || SIGNUP_MESSAGES.errorFail;
+
+        this.errorMessage.set(message);
         },
       });
   }

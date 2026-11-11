@@ -24,7 +24,6 @@ app.use(express.json());
 
 app.post('/api/signup', async (req, res) => {
   try {
-    console.log('body', req.body);
     const { firstName, lastName, email } = req.body;
 
     if (!firstName || !lastName || !email) {

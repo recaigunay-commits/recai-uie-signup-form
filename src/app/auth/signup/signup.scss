@@ -22,3 +22,7 @@
   .signup-column .ui.form {
     text-align: left;
   }
+
+  :host::ng-deep formly-validation-message {
+    color: red;
+  }
