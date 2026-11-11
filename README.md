@@ -5,10 +5,9 @@ and used semantic ui lib for styling and ngx-formly lib for form
 
 ## Development server
 
-To start a local development server, run:
+To start a local development server, after npm install then run:
 
 ```bash
-npm install
 ng serve
 ```
 
@@ -26,7 +25,7 @@ This will compile your project and store the build artifacts in the `dist/` dire
 
 This will run express server listening on `http://localhost:4000` to accept api requests
 
-To start a express server, run:
+To start a express server, after run ng build and then run:
 
 ```bash
 npm run serve:ssr:recai-uie-signup-form
